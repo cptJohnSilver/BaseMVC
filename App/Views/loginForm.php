@@ -10,5 +10,6 @@ require 'baseTop.php';
 			<input type='password' name='userPwd'><br>
 			<input type='submit' name='regSubmit' value='Войти'>
 		</form>
-	</body>
-</html>
+<?php
+require 'baseFooter.php';
+?>

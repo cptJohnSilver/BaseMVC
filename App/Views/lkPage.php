@@ -5,11 +5,11 @@ require 'baseTop.php';
 		<h1>Личный кабинет</h1>
 		<?php if ($loggedIn) {
 			if ((isset($result)) && ($result == true) && (isset($qty))){
-				echo "<p style='color: red;'>Операция выполнена успешно.</p>";
-				echo "<p style='color: red;'>С вашего счета списано ".$qty." условных единиц.</p>";
+				echo "<div class='alert alert-success'>Операция выполнена успешно.</div>";
+				echo "<div class='alert alert-success'>С вашего счета списано ".$qty." условных единиц.</div>";
 			} elseif ((isset($result)) && ($result == false) && (isset($qty))) {
-				echo "<p style='color: red;'>При выполнении операции возникла ошибка.</p>";
-				echo "<p style='color: red;'>Не удалось списать ".$qty." условных единиц с Вашего счета.</p>";
+				echo "<div class='alert alert-danger'>При выполнении операции возникла ошибка.</div>";
+				echo "<div class='alert alert-danger'>Не удалось списать ".$qty." условных единиц с Вашего счета.</div>";
 			}
 		?>
 		<p>Приветствую, <b><?= htmlspecialchars($user, ENT_QUOTES); ?></b>!</p>
@@ -23,5 +23,6 @@ require 'baseTop.php';
 		<?php } else { ?>
 		<p>Чтобы начать работу, необходима <a href='index.php?section=users&action=login'>авторизация</a>.</p>
 		<?php } ?>
-	</body>
-</html>
+<?php
+require 'baseFooter.php';
+?>
