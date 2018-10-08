@@ -20,7 +20,8 @@ class Users {
 				$_SESSION['userLogin'] = $_REQUEST['userName'];
 				$_SESSION['userName'] = $userLogin[0]['name'];
 				$_SESSION['userId'] = $userLogin[0]['id'];
-				$_SESSION['userPwd'] = $_REQUEST['userPwd'];
+				//Для обеспечения более безопасного хранения пароля записываем его в сессию в уже хэшированном виде
+				$_SESSION['userPwd'] = User::pwdHash($_REQUEST['userPwd']);
 				$_SESSION['loggedIn'] = true;
 				$result = true;
 			} else {
