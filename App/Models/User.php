@@ -9,15 +9,16 @@ use PDO;
 class User extends \Core\Model {
 
 	//Авторизация
-	public static function login($user, $pwd) {
+	public static function login($user, $userPwd) {
 		settype($user, "string");
-		settype($pwd, "string");
-		$pwd = sha1($pwd . configuration::PWD_SALT);
+		settype($userPwd, "string");
+		//$pwd = sha1($pwd.configuration::PWD_SALT);
+		$userPwd = self::pwdHash($userPwd);
 		try {
 			$db = static::dbConnect();
 			$query = $db->prepare("SELECT id, login, name FROM users WHERE login = :user AND password = :pwd");
 			$query->bindParam(":user", $user);
-			$query->bindParam(":pwd", $pwd);
+			$query->bindParam(":pwd", $userPwd);
 			$query->execute();
 			if($query->rowCount() == 1) {
 				$result = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -34,7 +35,8 @@ class User extends \Core\Model {
 	//Получение данных о состоянии счета
 	public static function getBalance ($userId) {
 		settype($userId, "integer");
-		$userPwd = sha1($_SESSION['userPwd'].configuration::PWD_SALT);
+		//$userPwd = sha1($_SESSION['userPwd'].configuration::PWD_SALT);
+		$userPwd = $_SESSION['userPwd'];
 		try {
 			$db = static::dbConnect();
 			$query = $db->prepare("SELECT balance FROM users WHERE id = :user AND password = :pwd");
@@ -53,7 +55,8 @@ class User extends \Core\Model {
 	public static function updateBalance ($userId, $qty) {
 		settype($userId, "integer");
 		settype($qty, "integer");
-		$userPwd = sha1($_SESSION['userPwd'].configuration::PWD_SALT);
+		//$userPwd = sha1($_SESSION['userPwd'].configuration::PWD_SALT);
+		$userPwd = $_SESSION['userPwd'];
 		$db = static::dbConnect();
 		$query = $db->prepare("SELECT balance FROM users WHERE id = :userId AND password = :userPwd FOR UPDATE");
 		$query->bindParam(":userId", $userId);
@@ -76,6 +79,12 @@ class User extends \Core\Model {
 		} else {
 			return false;
 		}
+	}
+
+	//Хэширование пароля по запросу
+	public static function pwdHash ($password){
+		$result = sha1($password.configuration::PWD_SALT);
+		return $result;
 	}
 
 	//Выход из системы
