@@ -24,7 +24,7 @@ class InitialSetup extends \Core\Model {
 			$query->bindParam(":userName", $userName);
 			$query->bindParam(":userBalance", $userBalance);
 			$query->execute();
-			echo "Установка завершена.";
+			echo "Установка завершена.<br>Не забудьте удалить файл.";
 		} catch (PDOException $e) {
 			echo $e->getMessage();
 		}
@@ -35,6 +35,5 @@ class InitialSetup extends \Core\Model {
 $setupDB = new InitialSetup();
 $setupDB->createDB();
 unset($setupDB);
-unlink('InitialSetup.php');
 
 ?>
