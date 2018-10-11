@@ -3,6 +3,7 @@
 //Модель личного кабинета
 namespace App\Models;
 
+use \Core\Sessions;
 use \App\configuration;
 use PDO;
 
@@ -36,7 +37,7 @@ class User extends \Core\Model {
 	public static function getBalance ($userId) {
 		settype($userId, "integer");
 		//$userPwd = sha1($_SESSION['userPwd'].configuration::PWD_SALT);
-		$userPwd = $_SESSION['userPwd'];
+		$userPwd = Sessions::getSession("userPwd");
 		try {
 			$db = static::dbConnect();
 			$query = $db->prepare("SELECT balance FROM users WHERE id = :user AND password = :pwd");
@@ -52,32 +53,37 @@ class User extends \Core\Model {
 	}
 
 	//Обновление данных о балансе в БД
-	public static function updateBalance ($userId, $qty) {
+	public static function updateBalance ($userId, $quantity) {
 		settype($userId, "integer");
-		settype($qty, "integer");
+		settype($quantity, "integer");
 		//$userPwd = sha1($_SESSION['userPwd'].configuration::PWD_SALT);
-		$userPwd = $_SESSION['userPwd'];
-		$db = static::dbConnect();
-		$query = $db->prepare("SELECT balance FROM users WHERE id = :userId AND password = :userPwd FOR UPDATE");
-		$query->bindParam(":userId", $userId);
-		$query->bindParam(":userPwd", $userPwd);
-		$query->execute();
-		$currentBalance = $query->fetchAll(PDO::FETCH_ASSOC);
-		unset($query);
-		if ($currentBalance[0]['balance'] >= $qty) {
-			$newUserBalance = $currentBalance[0]['balance'] - $qty;
-			$query = $db->prepare("UPDATE users SET balance = :newUserBalance WHERE id = :userId AND password = :userPwd");
-			$query->bindParam(":newUserBalance", $newUserBalance);
+		$userPwd = Sessions::getSession("userPwd");
+		try {
+			$db = static::dbConnect();
+			$db->beginTransaction();
+			$query = $db->prepare("SELECT balance FROM users WHERE id = :userId AND password = :userPwd FOR UPDATE");
 			$query->bindParam(":userId", $userId);
 			$query->bindParam(":userPwd", $userPwd);
 			$query->execute();
-			if ($query){
-				return true;
+			$currentBalance = $query->fetchAll(PDO::FETCH_ASSOC);
+			if ($currentBalance[0]['balance'] >= $quantity) {
+				$newUserBalance = $currentBalance[0]['balance'] - $quantity;
+				$query = $db->prepare("UPDATE users SET balance = :newUserBalance WHERE id = :userId AND password = :userPwd");
+				$query->bindParam(":newUserBalance", $newUserBalance);
+				$query->bindParam(":userId", $userId);
+				$query->bindParam(":userPwd", $userPwd);
+				$query->execute();
+				$db->commit();
+				if ($query){
+					return true;
+				} else {
+					return false;
+				}
 			} else {
 				return false;
 			}
-		} else {
-			return false;
+		} catch (PDOException $e) {
+			echo $e->getMessage();
 		}
 	}
 
@@ -91,7 +97,7 @@ class User extends \Core\Model {
 	public static function logout($userId){
 		//TODO
 		settype($userId, "integer");
-		session_destroy();
+		Sessions::destroySession();
 		return true;
 	}
 
