@@ -5,6 +5,7 @@ require 'baseTop.php';
 					<?php if ($loggedIn) {?>
 					<p>Приветствую, <b><?= htmlspecialchars($user, ENT_QUOTES); ?></b>!</p>
 					<p>Для работы с системой, Вы можете перейти в <a href='index.php?section=users&action=login'>личный кабинет</a>.</p>
+					<p>Чтобы выйти из системы, кликните <a href='index.php?section=users&action=logout'>сюда</a>.</p>
 					<?php } else { ?>
 					<p>Чтобы начать работу, необходима <a href='index.php?section=users&action=login'>авторизация</a>.</p>
 					<?php } ?>
