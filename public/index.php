@@ -6,21 +6,6 @@ require '../vendor/autoload.php';
 set_error_handler('Core\Error::errorHandler');
 set_exception_handler('Core\Error::exceptionHandler');
 
-	//Функциональность исключена
-	/*
-	//Автозагрузка классов
-	spl_autoload_register(function ($class) {
-	    $root = dirname(__DIR__);   // get the parent directory
-    	$file = $root . '/' . str_replace('\\', '/', $class) . '.php';
-	    if (is_readable($file)) {
-        	require $root . '/' . str_replace('\\', '/', $class) . '.php';
-	    }
-	});
-	*/
-
-	//Функциональность исключена
-	//error_reporting(E_ALL);
-
 //Определяем и переходим по маршруту
 if((isset($_REQUEST['section'])) && (!empty($_REQUEST['section']))){
 	settype($_REQUEST['section'], "string");
