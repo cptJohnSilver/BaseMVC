@@ -36,5 +36,6 @@ class Error {
             fwrite($writeLog, $message);
             View::render("$code.php", ["title" => "Возникла ошибка", "message" => $exception->getMessage()]);
         }
+        exit();
     }
 }
