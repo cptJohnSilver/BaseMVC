@@ -16,7 +16,7 @@ class User extends \Core\Model {
 		$userPwd = self::pwdHash($userPwd);
 		try {
 			$db = static::dbConnect();
-			$query = $db->prepare("SELECT id, login, name FROM users WHERE login = :user AND password = :pwd");
+			$query = $db->prepare("SELECT id, name FROM users WHERE login = :user AND password = :pwd");
 			$query->bindParam(":user", $userLogin);
 			$query->bindParam(":pwd", $userPwd);
 			$query->execute();
