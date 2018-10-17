@@ -22,9 +22,6 @@ class Users {
 			//Проверяем правильность логина и пароля, введенных пользователем
 			if ($userAuthorization) {
 				Sessions::setSession("userId", $userAuthorization[0]['id']);
-				Sessions::setSession("userLogin", $userLogin);
-				//Для обеспечения более безопасного хранения пароля записываем его в сессию в уже хэшированном виде
-				Sessions::setSession("userPwd", User::pwdHash($userPwd));
 				Sessions::setSession("userName", $userAuthorization[0]['name']);
 				Sessions::setSession("loggedIn", true);
 				$result = true;
