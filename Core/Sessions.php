@@ -5,6 +5,7 @@ namespace Core;
 
 class Sessions {
 
+	//Инициализация сессии
 	public static function startSession (){
 		session_start();
 	}
@@ -17,6 +18,7 @@ class Sessions {
 
 	}
 
+	//Получение значения сессии
 	public static function getSession ($name) {
 		self::startSession();
 		if (isset($_SESSION[$name])){

@@ -34,7 +34,7 @@ class Error {
             $message .= "\nПодробности: " . $exception->getTraceAsString();
             $message .= "\nВозникла в '" . $exception->getFile() . "' на линии " . $exception->getLine();
             fwrite($writeLog, $message);
-            View::render("$code.php", ["title" => "Возникла ошибка"]);
+            View::render("$code.php", ["title" => "Возникла ошибка", "message" => $exception->getMessage()]);
         }
     }
 }
