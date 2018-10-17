@@ -10,7 +10,7 @@ set_exception_handler('Core\Error::exceptionHandler');
 	/*
 	//Автозагрузка классов
 	spl_autoload_register(function ($class) {
-	    $root = dirname(__DIR__);
+	    $root = dirname(__DIR__);   // get the parent directory
     	$file = $root . '/' . str_replace('\\', '/', $class) . '.php';
 	    if (is_readable($file)) {
         	require $root . '/' . str_replace('\\', '/', $class) . '.php';
@@ -28,7 +28,6 @@ if((isset($_REQUEST['section'])) && (!empty($_REQUEST['section']))){
 } else {
 	$section = "Home";
 }
-
 if ((isset($_REQUEST['action'])) && (!empty($_REQUEST['action']))){
 	settype($_REQUEST['action'], "string");
 	$action = preg_replace("/[^a-z,-]/i", '', $_REQUEST['action']);

@@ -24,7 +24,7 @@ class InitialSetup extends \Core\Model {
 			$query->bindParam(":userName", $userName);
 			$query->bindParam(":userBalance", $userBalance);
 			$query->execute();
-			echo "Установка завершена.<br>Не забудьте удалить файл.";
+			echo "Установка завершена.<br>Не забудьте удалить установочный файл.";
 		} catch (PDOException $e) {
 			echo $e->getMessage();
 		}
